@@ -3,9 +3,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+List<Socket> clients = [];
+
 void handleConnection(Socket client) {
   client.listen((data) {
-    //  log('Received: ${String.fromCharCodes(data).trim()}');
+    final message = String.fromCharCodes(data).trim();
+    log('Received: $message');
+    clients.forEach((client) {
+      client.write("Server: $message joined the party!");
+    });
   }, onError: (error) {
     log(error);
     client.close();
