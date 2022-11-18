@@ -1,10 +1,28 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-void main() {
-  //TODO: Server.1 : get a free IP address
-  final ip = InternetAddress.loopbackIPv4;
+void handleConnection(Socket client) {
+  client.listen((data) {
+    //  log('Received: ${String.fromCharCodes(data).trim()}');
+  }, onError: (error) {
+    log(error);
+    client.close();
+  }, onDone: () {
+    log('Server: Client left');
+    client.close();
+  });
+}
+
+Future<void> main() async {
+  final ip = InternetAddress.anyIPv4;
+  final server = await ServerSocket.bind(ip, 3000);
+  print("Server is running on ${server.address.address}:${server.port}");
+  server.listen((Socket event) {
+    print("Server: New client connected");
+    handleConnection(event);
+  });
   runApp(const MyApp());
 }
 
