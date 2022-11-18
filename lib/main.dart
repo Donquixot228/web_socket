@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 void main() {
+  //TODO: Server.1 : get a free IP address
+  final ip = InternetAddress.loopbackIPv4;
   runApp(const MyApp());
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
